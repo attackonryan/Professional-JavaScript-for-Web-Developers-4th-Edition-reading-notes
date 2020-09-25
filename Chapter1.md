@@ -1,19 +1,19 @@
 # 第一章: 什么是JavaScript
-## 1.1历史回顾
+## 1.1 历史回顾
 1995年，网景公司一位名叫 __Brendan Eich__ 的工程师，开始为即将发布的Netscape Navigator2开发一个叫Mocha(后改名为LiveScript)的脚本语言。
 
 在Netscape Navigator2正式发布前，网景把LiveScript改名为 __JavaScript__，以便搭上媒体当时热烈炒作Java的顺风车。  
 
 由于JavaScript1.0很成功，网景又在Netscape Navigator3中发布了1.1版本。1997年，JavaScript1.1作为提案被提交给欧洲计算机制造商协会(Ecma)。
 第39技术委员会(TC39)承担了“标准化一门通用、跨平台、厂商中立的脚本语言的语法和语义”的任务。他们花了数月时间打造出 __ECMA-262__，也就是 __ECMAScript__ 这个新的脚本语言标准。  
-## 1.2JavaScript实现
+## 1.2 JavaScript实现
 完整的JavaScript实现包含以下几个部分
 
 1. 核心(ECMAScript)
 2. 文档对象模型(DOM)
 3. 浏览器对象模型(BOM)
 
-### 1.2.1ECMAScript
+### 1.2.1 ECMAScript
 ECMAScript不局限于Web浏览器，Web浏览器只是ECMAScript实现可能存在的一种 __宿主环境__ (host environment)。宿主环境提供ECMAScript的基准实现和与环境自身交互必需的扩展(如DOM)。Node.js也是一种宿主环境。  
 
 在基本层面上，ECMA-262描述了ECMAScript语言的如下部分：
@@ -48,7 +48,7 @@ ECMA-262第9版，也称为ES8或ES2018，发布于2018年6月。这次修订包
 
 ECMA-262第10版，也称为ES8或ES2019，发布于2019年6月。这次修订增加了Array.prototype.flat()/flatMap()、String.prototype.trimStart()/trimEnd()、Object.fromEntries()方法，以及Symbol.prototype.description属性，明确定义了Function.prototype.toString()的返回值并固定了Array.prototype.sort()的顺序。另外，这次修订解决了与JSON字符串兼容的问题，并定义了catch子句的可选绑定。  
 
-### DOM
+### 1.2.2 DOM
 __文档对象模型__(DOM, Document Object Model)是一个应用编程接口(API)，用于在HTML中使用扩展的XML。DOM将整个页面抽象为一组分层节点。HTML或XML页面的每个组成部分都是一种节点，包含不同的数据。  
 
 DOM通过创建表示文档的树，让开发者可以随心所欲地控制网页的内容和结构。使用DOM API，可以轻松地删除、添加、替换、修改节点。  
@@ -73,7 +73,7 @@ DOM Level3进一步扩展了DOM，增加了以统一的方式加载和保存文�
 - 数学标记语言(MathML, Mathematical Markup Language)
 - 同步多媒体集成语言(SMIL, Synchronized Multimedia Integration Language)
 
-### BOM 
+### 1.2.3 BOM 
 __浏览器对象模型__(BOM)API用于支持访问和操作浏览器的窗口。总的来说，BOM主要针对浏览器窗口和子窗口(frame)，不过人们通常会把任何特定于浏览器的扩展都归在BOM的范畴内。比如，下面就是这样一些扩展：
 
 - 弹出新浏览器窗口的能力。
