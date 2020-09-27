@@ -255,7 +255,7 @@ ECMAScript有7种简单数据类型(也称为**原始类型**):
 let message = "some string"
 console.log(typeof message)  // "string"
 console.log(typeof(message)) // "string"
-console.log(typeof 95) // "number"
+console.log(typeof 95)       // "number"
 ```
 
 typeof null会返回“object”。这是因为特殊值null被认为是一个对空对象的引用。
@@ -311,6 +311,158 @@ let messageAsBoolean = Boolean(message)  // true
 |  Number  | 非零数值（包括无穷值） | 0、NaN（后面会介绍） |
 |  Object  |        任意对象        |         null         |
 | Undefind |     N/A（不存在）      |       undefind       |
+
+### 3.4.5 Number 类型
+
+Number类型使用IEEE 754格式表示整数和浮点值（在某些语言中也叫双精度值）。
+
+最基本的数字字面量格式是十进制：
+
+```js
+let intNum = 55   // 整数
+```
+
+可以用八进制表示，第一个数字必须为0，然后是相应的八进制数字（0 ~ 7）。如果字面量中包含的数字超过了有效范围，则忽略前缀的零，后面的数字序列会被当成十进制：
+
+```js
+let octalNum1 = 070 // 八进制的56
+let octalNum2 = 079 // 无效的八进制，当成79处理
+```
+
+**八进制字面量在严格模式无效，必须使用0o前缀**
+
+用十六进制表示，必须让真正的数值前缀0x（区分大小写）：
+
+```js
+let hexNum1 = 0xA  // 十六进制10
+let hexNum2 = 0x1f // 十六进制31
+```
+
+#### 1.浮点值
+
+定义浮点值，必须包含小数点：
+
+```js
+let floatNum1 = 1.1
+let floatNum2 = 0.1
+let floatNum3 = .1  // 有效但不推荐
+```
+
+ECMAScript总是想方设法把值转换为整数，如下两种情况：
+
+```js
+let floatNum1 = 1.   // 小数点后面没有数字，当成整数1处理
+let floatNum2 = 10.0 // 小数点后面是零，当成整数10处理
+```
+
+浮点值的精确度最高可达17位小数，但在算数计算中远不如整数精确。例如0.1加0.2的值不是3而是0.30000000000000004。
+
+**永远不要测试某个特定的浮点值**
+
+#### 2.值的范围
+
+ECMAScript可以表示的最小数值保存在**Number.MIN_VALUE**中。最大数值保存在**Number.MAX_VALUE**中。
+
+如果超出了范围，数值会被自动转换为Infinity/-Infinity（无穷）值。
+
+可以使用isFinite()函数判断是否是一个有穷值
+
+正负Infinity不能再进一步用于任何计算
+
+#### 3.NaN
+
+有一个特殊的值叫NaN，意思是“不是数值”（Not a Number），用于表示本来要返回数值的操作失败了。
+
+NaN有几个独特的属性，首先，任何涉及NaN的操作始终返回NaN。
+
+其次，NaN不等于包括NaN在内的任何值：
+
+```js
+console.log(NaN == NaN) // false
+```
+
+ECMAScript提供了isNaN()函数。该函数会尝试把参数转换为数值，任何不能转换为数值的值都会导致这个函数返回true：
+
+```js
+console.log(isNaN(NaN))    // true
+console.log(isNaN(10))     // false, 10是数值
+console.log(isNaN("10"))   // false, 可以转换成数值10
+console.log(isNaN("blue")) // true, 不可以转换成数值
+console.log(isNaN(true))   // false, 可以转换成数值1
+```
+
+#### 4.数值转换
+
+有3个函数可以将非数值转换为数值：**Number()**、**parseInt()**、**parseFloat()**
+
+Number()函数基于如下规则执行转换。
+
+- 布尔值，true转换为1，false转换为0
+- 数值，直接返回
+- null，返回0
+- undefind，返回NaN
+- 字符串，应用如下规则
+- - 如果字符串包含数值字符，包括数值字符前面带加减号的情况，则转换为一个十进制数值。
+  - 如果字符串包含有效的浮点值格式如“1.1”，则会转换为相应的浮点值（同样，忽略前面的零）。
+  - 如果字符串包含有效的十六进制格式如“0xf”,则会转换为与该十六进制值对应的十进制整数值。
+  - 如果是空字符串（不包含字符），则返回0。
+  - 如果字符串包含上述情况之外的其他字符，则返回NaN。
+- 对象，调用valueOf()方法，并按照上述规则转换返回的值。如果转换结果是NaN，则调用toString()方法，再按照转换字符串的规则转换。
+
+下面是几个具体的例子：
+
+```js
+let num1 = Numer("Hello world") // NaN
+let num2 = Numer("")            // 0
+let num3 = Numer("000011")      // 11
+let num4 = Numer(true)          // 1
+```
+
+
+
+**通常在需要得到整数时可以优先使用parseInt()函数**。
+
+字符串最前面的空格会被忽略，从第一个非空格字符开始转换。如果第一个字符不是数值字符、加号或减号，parseInt()立即返回NaN。**这意味着空字符串也会返回NaN**（与Number()不一样）。
+
+示例：
+
+```js
+let num1 = parseInt("1234blue")  // 1234
+let num2 = parseInt("")          // NaN
+let num3 = parseInt("0xA")       // 10，解释为十六进制
+let num4 = parseInt(22.5)        // 22
+let num5 = parseInt("70")        // 70，解释为十进制
+let num6 = parseInt("0xf")       // 15，解释为十六进制
+```
+
+**parseInt()也接受第二个参数，用于指定底数（进制数）**。
+
+```js
+let num = parseInt("0xAF", 16) // 175
+let num1 = parseInt("AF", 16)  // 175， 可以省掉0x前缀
+let num2 = parseInt("AF")      // NaN
+```
+
+
+
+parseFloat()函数的工作方式与parseInt()类似。但是当parseInt()遇到第二个小数点时，剩余字符都会被忽略，因此，“22.34.5”将被转换为22.34
+
+**parseFloat()始终忽略字符串开头的零**。
+
+parseFloat()只解析十进制值。
+
+如果字符串表示整数（没有小数点或者小数点后面只有零（原书说只有一个零，我测试后是多个零都可以）），则parseFloat()返回整数。
+
+示例：
+
+```js
+let num1 = parseFloat("1234blue")  // 1234，按整数解析
+let num2 = parseFloat("0xA")       // 0
+let num3 = parseFloat("22.5")      // 22.5
+let num4 = parseFloat("22.34.5")   // 22.34
+let num5 = parseFloat("0908.5")    // 908.5
+let num6 = parseFloat("3.125e7")   // 31250000
+```
 
 
 
