@@ -2,9 +2,9 @@
 
 ##  2.1 \<script\>元素
 
-将JavaScript插入HTML的主要方法是使用**\<script\>**元素。
+将JavaScript插入HTML的主要方法是使用 \<script\>元素。
 
-**\<script\>**元素有下列8个属性：
+\<script\>元素有下列8个属性：
 
 - async: 可选。表示应该立即开始下载脚本，但不阻止其他页面动作。只对外部脚本文件有效。
 - charset: 可选。使用src属性指定的代码字符集。很少用，因为大部分浏览器不在乎它的值。
@@ -15,7 +15,7 @@
 - src: 可选。表示包含要执行的代码的外部文件
 - type: 可选。 代替language，表示代码块中脚本语言的内容类型(也称MIME类型)。如果这个值是module，则代代码会被当成ES6模块，这时才可以出现import和export关键字。
 
-要嵌入行内JavaScript代码，直接把代码放在**\<script\>**元素中就行：
+要嵌入行内JavaScript代码，直接把代码放在\<script\>元素中就行：
 
 ```html
 <script>
@@ -25,7 +25,7 @@ function sayHi(){
 </script>
 ```
 
-包含在**\<script\>**内的代码会被从上到下解释。
+包含在\<script\>内的代码会被从上到下解释。
 
 注意代码中不能出现字符串\</script\>，下面的代码会导致浏览器报错：
 
@@ -47,13 +47,13 @@ function sayScript(){
 </script>
 ```
 
-要包含外部文件中的Javascript，就必须使用**src**属性
+要包含外部文件中的Javascript，就必须使用src属性
 
 ```html
 <script src="example.js"></script>
 ```
 
-使用了**src**属性的\<script\>元素不应该再在\<script\>和\</script\>标签中再包含其他JavaScript代码，浏览器会忽略行内代码。
+使用了src属性的\<script\>元素不应该再在\<script\>和\</script\>标签中再包含其他JavaScript代码，浏览器会忽略行内代码。
 
 浏览器在解析这样的资源时，会向src属性指定的路径发送一个GET请求。**这个初始的请求不受浏览器同源策略限制**，但返回并执行的JavaScript则受限制。
 
