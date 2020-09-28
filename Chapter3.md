@@ -464,7 +464,186 @@ let num5 = parseFloat("0908.5")    // 908.5
 let num6 = parseFloat("3.125e7")   // 31250000
 ```
 
+### 3.4.6 String 类型
 
+String（字符串）数据类型表示零或多个16位Unicode字符序列。字符串可以使用双引号（"）、单引号（'）或反引号（`）标示。
+
+```js
+let firstName = "John"
+let lastName = 'Jacob'
+let lastName2 = `Dead By Daylight`
+let wrong = 'error"   // 这是错误的，必须以同种引号作为字符串结尾。
+```
+
+#### 1. 字符字面量
+
+字符串数据类型包含一些字符字面量，用于表示非打印字符或其他用途的字符，如下表所示：
+
+| 字面量 | 含义                                |
+| :----- | :---------------------------------- |
+| \n     | 换行                                |
+| \t     | 制表                                |
+| \b     | 退格                                |
+| \r     | 回车                                |
+| \f     | 换页                                |
+| \\\    | 反斜杠（\）                         |
+| \\'    | 单引号（'）                         |
+| \\"    | 双引号（"）                         |
+| \\`    | 反引号（`）                         |
+| \xnn   | 以十六进制编码nn表示的字符          |
+| \unnnn | 以十六进制编码nnnn表示的Unicode字符 |
+
+#### 2. 字符串的特点
+
+ECMAScript中的字符串是不可变的（immutable），意思是一旦创建，它们的值就不能变了。要修改某个变量中的字符串值，必须先销毁原始的字符串，然后将包含新值的另一个字符串保存到该变量。
+
+#### 3. 转换为字符串
+
+**几乎所有值都有toString()方法**。这个方法唯一的用途就是返回当前值的字符串等价物。比如：
+
+```js
+let age = 11
+let ageAsString = age.toString()     // 字符串“11”
+let found = true
+let foundAsString = found.toString() // 字符串“true”
+```
+
+toString()方法可见于数值、布尔值、对象和字符串值。null和undefind值没有toString()方法。
+
+在对数值调用这个方法时，toString()可以接收一个底数参数，即以什么底数来输出数值的字符串表示。
+
+```js
+let num = 10
+console.log(num.toString())     // "10"
+console.log(num.toString(2))    // "1010"
+console.log(num.toString(8))    // "12"
+console.log(num.toString(10))   // "10"
+console.log(num.toString(16))   // "a"
+```
+
+#### 4. 模板字面量
+
+模板字面量可以跨行定义字符串：
+
+```js
+let myNultiLineTemplateLiteral = `fisrt line
+second line`
+console.log(myNultiLineTemplateLiteral)
+// first line
+// second line
+```
+
+顾名思义，模板字面量在定义模板时特别有用，比如下面这个HTML模板：
+
+```js
+let pageHTML = `
+<div>
+  <a href="#">
+	<span>Jake</span>
+  </a>
+</div>`
+```
+
+**模板字面量会保持反引号内部的空格**，因此在使用时要格外注意。格式正确的模板字符串看起来可能会缩进不当。
+
+```js
+// 这个模板字面量在换行符之后有25个空格符
+let myTemplateLiteral = `first line
+						 second line`
+console.log(myTemplateLiteral.length)    // 47
+
+let secondTemplateLiteral = `
+first line
+second line`
+console.log(secondTemplateLiteral[0] === '\n')  // true
+```
+
+
+
+#### 5. 字符串插值
+
+模板字面量最常用的一个特性是支持字符串插值，也就是可以在一个连续定义中插入一个或多个值。
+
+字符串插值通过在${}中使用一个JavaScript表达式实现：
+
+```js
+let value = 5
+let exponent = 'second'
+let interpolatedTemplateLiteral = `${ value } to thr ${ exponent } power is ${ value * value }`
+console.log(interpolatedTemplateLiteral) // 5 to the second power is 25
+```
+
+**所有插入的值都会使用toString()强制转型为字符串**。任何JavaScript表达式都可以用于插值。
+
+#### 6. 模板字面量标签函数
+
+模板字面量也支持定义**标签函数（tag function）**，而通过标签函数可以自定义插值行为。
+
+标签函数会接收被插值记号分隔后的模板和对每个表达式求值的结果。
+
+通过一个例子来理解：
+
+```js
+let a = 6
+let b = 9
+
+function simpleTag(strings, aValExpression, bValExpression, sumExpression){
+    console.log(strings)
+    console.log(aValExpression)
+    console.log(bValExpression)
+    console.log(sumExpression)
+    return 'foobar'
+}
+
+let untaggedResult = `${ a } + ${ b } = ${ a + b }`
+let taggedRsult = simpleTag`${ a } + ${ b } = ${ a + b }`
+// ["", " + ", " = ", ""]
+// 6
+// 9
+// 15
+
+console.log(untaggedResult) // "6 + 9 = 15"
+console.log(taggedRsult)    // "foobar"
+```
+
+#### 7. 原始字符串
+
+使用模板字面量也可直接获取原始的模板字面量内容（如换行符或Unicode字符），而不是被转换后的字符表示。
+
+为此，可以使用默认的**String.raw**标签函数：
+
+```js
+console.log(`\u00A9`)  			 //	©
+console.log(String.raw`\u00A9`)  // \u00A9
+```
+
+另外，也可以通过标签函数的第一个参数，即字符串数组的.raw属性取得每个字符串的原始内容：
+
+```js
+function printRaw(strings){
+    console.log('Actual characters:')
+    for(const string of strings){
+        console.log(string)
+    }
+    
+    console.log('Escapled characters:')
+    for(const rawString of strings.raw){
+        console.log(rawString)
+    }
+}
+
+printRaw`\u00A9${'and'}\n`
+// Actual characters:
+// ©
+// (换行符)
+// Escaped characters:
+// \u00A9
+// \n
+```
+
+
+
+ 
 
 
 
