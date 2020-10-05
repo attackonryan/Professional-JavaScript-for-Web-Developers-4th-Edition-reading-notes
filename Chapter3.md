@@ -6,6 +6,8 @@
 
 ECMAScript中一切区分大小写。
 
+
+
 ### 3.1.2 标识符
 
 标识符就是变量、函数、属性或函数参数的名称。标识符可以由一或多个下列字符组成：
@@ -18,6 +20,8 @@ ECMAScript中一切区分大小写。
 - firstSecond
 - myCar
 
+
+
 ### 3.1.3 注释
 
 ```js
@@ -26,6 +30,8 @@ ECMAScript中一切区分大小写。
 	多行注释
 */
 ```
+
+
 
 ### 3.1.4 严格模式
 
@@ -42,6 +48,8 @@ function doSomething(){
 }
 ```
 
+
+
 ### 3.1.5 语句
 
 ECMAScript中的语句以分号结尾，**但不是必需的**：
@@ -51,9 +59,13 @@ let sum = a + b  // 没有分号也有效
 let diff = a - b;  // 加分号有效
 ```
 
+
+
 ## 3.2 关键字与保留字
 
 略过
+
+
 
 ## 3.3 变量
 
@@ -138,6 +150,8 @@ function foo(){
 foo() // 36
 ```
 
+
+
 ### 3.3.2 let声明
 
 let 跟 var的作用差不多，但有重要的区别。最明显的区别是，**let声明的范围是块作用域，而var声明的范围是函数作用域**。
@@ -196,6 +210,8 @@ for(var i = 0; i < 5; i ++){
 console.log(i)  // ReferenceError: i 没有定义
 ```
 
+
+
 ### 3.3.3 const声明
 
 const 的行为与let基本相同，唯一一个重要的区别是用它声明变量时必须同时初始化变量，且尝试修改const声明的变量会导致运行时错误。
@@ -212,6 +228,8 @@ const person = {}
 person.name = 'Matt' // ok
 ```
 
+
+
 ### 3.3.4 声明风格及最佳实践
 
 #### 1. 不使用var
@@ -219,6 +237,8 @@ person.name = 'Matt' // ok
 #### 2. const优先， let次之
 
 使用const可以让浏览器运行时强制保持变量不变，也可以让静态代码分析工具提前发现不合法的赋值操作。只有再提前知道未来会有修改操作时，才使用let。
+
+
 
 ## 3.4 数据类型
 
@@ -260,6 +280,8 @@ console.log(typeof 95)       // "number"
 
 typeof null会返回“object”。这是因为特殊值null被认为是一个对空对象的引用。
 
+
+
 ### 3.4.2 Undefind 类型
 
 Undefind类型只有一个值，就是特殊值undefined。当使用var或let声明了变量但没有初始化时，相当于给变量赋予了undefind值。
@@ -270,6 +292,8 @@ console.log(message == undefind) // true
 ```
 
 undefind是一个假值
+
+
 
 ### 3.4.3 Null 类型
 
@@ -291,6 +315,8 @@ console.log(null == undefind)
 
 null同样是一个假值
 
+
+
 ### 3.4.4 Boolean类型				
 
 Boolean（布尔值）类型是ECMAScript中使用最频繁的类型之一，有两个字面量值：true和false。
@@ -311,6 +337,8 @@ let messageAsBoolean = Boolean(message)  // true
 |  Number  | 非零数值（包括无穷值） | 0、NaN（后面会介绍） |
 |  Object  |        任意对象        |         null         |
 | Undefind |     N/A（不存在）      |       undefind       |
+
+
 
 ### 3.4.5 Number 类型
 
@@ -463,6 +491,8 @@ let num4 = parseFloat("22.34.5")   // 22.34
 let num5 = parseFloat("0908.5")    // 908.5
 let num6 = parseFloat("3.125e7")   // 31250000
 ```
+
+
 
 ### 3.4.6 String 类型
 
@@ -643,7 +673,111 @@ printRaw`\u00A9${'and'}\n`
 
 
 
- 
+### 3.4.7 Symbol类型
+
+**符号（Symbol）是原始值，且符号实例是唯一、不可变的。**符号的用途是确保对象属性使用唯一标识符，不会发生属性冲突的危险。
+
+#### 1. 符号的基本用法
+
+符号需要使用Symbol()函数初始化。
+
+```js
+let sym = Symbol()
+console.log(typeof sym) // symbol
+```
+
+调用Symbol函数时，也可以传入一个字符串参数作为对符号的描述（description）。但是，这个字符串参数与符号定义或标识完全无关：
+
+```js
+let genericSymbol = Symbol()
+let otherGenericSymbol = Symbol()
+
+console.log(genericSymbol == otherGenericSymbol)  // false
+
+let fooSymbol = Symbol('foo')
+let otherFooSymbol = Symbol('foo')
+
+console.log(fooSymbol == otherFooSymbol)  // false
+```
 
 
+
+#### 2. 使用全局符号注册表
+
+如果运行时的不同部分需要共享和重用符号实例，那么可以用一个字符串作为键，在全局符号注册表中创建并重用符号。
+
+为此，需要使用Symbol.for()方法。**这个方法对每个字符串键都执行幂等操作**。第一次使用某个字符串调用时，它会检查全局运行时注册表，发现不存在对应的符号，于是会生成一个新的符号实例并添加至注册表中。后续使用相同字符串的调用会同样检查注册表，发现存在与该字符串对应的符号，就会返回该符号实例。
+
+```js
+let fooGlobalSymbol = Symbol.for('foo')
+let otherFooGlobalSymbol = Symbol.for('foo')
+
+console.log(fooGlobalSymbol == otherFooGlobalSymbol)  // true
+```
+
+**全局注册表中的符号必须使用字符串键来创建，因此作为参数传给Symbol.for()的任何值都会被转换为字符串**。
+
+还可以使用Symbol.keyFor()来查询全局注册表，这个方法接收符号，返回该全局符号对应的字符串键，如果查询的不是全局符号，则返回undefind。
+
+```js
+// 创建全局符号
+let s = Symbol.for('foo')
+console.log(Symbol.keyFor(s))  // foo
+
+// 创建普通符号
+let s2 = Symbol.for('bar')
+console.log(Symbol.keyFor(s2)) // undefind
+
+Symbol.keyFor(123)  // TypeErrr: 123 is not a symbol
+```
+
+
+
+#### 3. 使用符号作为属性
+
+凡是可以使用字符串或数值作为属性的地方，都可以使用符号。
+
+```js
+let s1 = Symbol('foo')
+let s2 = Symbol('bar')
+
+let o = {
+    [s1]: 'foo val'
+}
+// 这样也可以： o[s1] = 'foo val'
+
+Object.defineProperty(0, s2, {value: 'bar val'})
+```
+
+
+
+#### 4. 常用内置符号
+
+ECMAScript6也引入了一批常用内置符号（well-known symbol），用于暴露语言内部行为，开发者可以直接访问、重写或模拟这些行为。
+
+这些内置符号最重要的用途之一是重新定义它们，从而改变原生结构的行为。比如，我们知道for-of循环会在相关对象上使用Symbol.iterator属性，那么就可以通过在自定义对象上重新定义Symbol.iterator的值来改变for-of在迭代该对象时的行为。
+
+这些内置符号只是全局函数Symbol的普通字符串属性，指向一个符号的实例。所有这些内置符号属性都是不可写、不可枚举、不可配置的。
+
+> 在提到ECMAScript规范时，经常会引用符号在规范中的名称，前缀为@@。比如，@@iterator指的就是Symbol.iterator。
+
+**关于内置符号，我推荐大家看一看阮一峰老师在[<ECMAScript 6 入门>](https://es6.ruanyifeng.com/#docs/symbol#%E5%86%85%E7%BD%AE%E7%9A%84-Symbol-%E5%80%BC)中的讲解**。
+
+
+
+### 3.4.8 Object 类型
+
+ECMAScript中的对象其实就是一组数据和功能的集合。对象通过new操作符后跟对象类型的名称来创建。开发者可以通过创建Object类型的实例来创建自己的对象，然后再给对象添加属性和方法。
+
+Object实例本身并不是很有用，但理解与它相关的概念非常重要。类似Java中的Java.lang.Object，ECMAscript中的Object也是派生其他对象的基类。Object类型的所有属性和方法在派生的对象上同样存在。
+
+每个Object实例都有如下属性和方法。
+
+- constructor: 用于创建当前对象的函数。在前面的例子中，这个属性的值就是Object()函数。
+- hasOwnProperty(propertyName): 用于判断当前对象实例（不是原型）上是否存在给点的属性。
+- isPrototypeOf(object): 用于判断当前对象是否为另一个对象的原型。
+- propertyIsEnumerable(protertyName): 用于判断给点的属性是否可以使用for-in语句枚举。
+- toLocaleString(): 返回对象的字符串表示。该字符串反映对象所在的本地化执行环境。
+- toString(): 返回对象的字符串表示。
+- valueOf(): 返回对象对应的字符串、数值或布尔值表示。通常与toString()的返回值相同。
 
