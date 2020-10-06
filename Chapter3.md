@@ -976,3 +976,51 @@ console.log(result)      // 会执行这一行
 let myObject = preferredObject || backupObject
 ```
 
+### 3.5.4 乘性操作符
+
+略
+
+
+
+### 3.5.5 指数操作符
+
+略
+
+
+
+### 3.5.6 加性操作符
+
+#### 1. 加法操作符
+
+加法操作符（+）用于求两个数的和。
+
+如果两个操作数都是数值，加法操作符执行加法运算并根据如下规则返回结果。
+
+- 如果有任一操作数是NaN，则返回NaN
+- 如果是Infinity加Infinity，返回Infinity
+- 如果是-Infinity加-Infinity，返回-Infinity
+- 如果是Infinity加-Infinity，返回NaN
+- 如果是+0 加 +0，返回+0
+- 如果是-0 加 +0，返回+0
+- 如果是-0 加 -0，返回-0
+
+不过，如果有一个操作数是字符串，则要应用如下规则：
+
+- 如果两个操作数都是字符串，则拼接
+- 如果只有一个是字符串，则将另一个操作数转换为字符串，再拼接。
+
+如果有任一操作数是对象、数值或布尔值，则调用它们的toString()方法以获取字符串，对于undefind和null则调用String()函数，分别获取“undefind"和”null“
+
+#### 2. 减法操作符
+
+简单记忆，减法操作符会尽力将两个操作数转成数值。会优先调用对象的valueOf()方法，如果没有valueOf()则调用toString()方法，再将获得的值变为数值。如果操作数存在NaN，返回NaN
+
+```js
+let result1 = 5 - true    // true被转换成1， 结果是4
+let result2 = NaN - 1     // NaN
+let result3 = 5 - ''      // ''被转换成0， 结果是5
+let result4 = 5 - null    // null被转换成0，结果是5
+```
+
+
+
