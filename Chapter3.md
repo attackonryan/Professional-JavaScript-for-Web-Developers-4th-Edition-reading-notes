@@ -1013,7 +1013,7 @@ let myObject = preferredObject || backupObject
 
 #### 2. 减法操作符
 
-简单记忆，减法操作符会尽力将两个操作数转成数值。会优先调用对象的valueOf()方法，如果没有valueOf()则调用toString()方法，再将获得的值变为数值。如果操作数存在NaN，返回NaN
+简单记忆，减法操作符会尽力将两个操作数转成数值（Number(）。会优先调用对象的valueOf()方法，如果没有valueOf()则调用toString()方法，再将获得的值变为数值。如果操作数存在NaN，返回NaN
 
 ```js
 let result1 = 5 - true    // true被转换成1， 结果是4
@@ -1023,4 +1023,19 @@ let result4 = 5 - null    // null被转换成0，结果是5
 ```
 
 
+
+### 3.5.7 关系操作符
+
+关系操作符（>, < , >=, <=）
+
+简单记忆，尽力将两个操作数转为数值，但如果是两个字符串例外，会对每个字符一一比较编码值的大小(本质还是对比数值的大小)。
+
+如果有NaN，一定返回false
+
+```js
+"Brick" < "alphabet"  // true, B的编码为66，a为97
+"23" < "3"            // true
+"23" < 3              // false, "23"会被转换为23
+"a" < 3               // false, "a"会被转换为NaN
+```
 
