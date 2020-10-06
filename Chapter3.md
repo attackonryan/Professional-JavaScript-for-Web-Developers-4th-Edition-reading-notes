@@ -1065,3 +1065,41 @@ NaN == NaN       // false， NaN不和任何值相等
 
 
 
+### 3.5.9 条件操作符
+
+略
+
+### 3.5.10 赋值操作符
+
+略
+
+### 3.5.11 逗号操作符
+
+略
+
+## 3.6 语句 
+
+略
+
+
+
+## 3.7 函数
+
+ECMAScript中的函数使用function关键字声明，后跟一组参数，然后是函数体。
+
+```js 
+function functionName(arg0, arg1){
+    statements
+}
+```
+
+函数只要碰到return语句，就会立即停止执行并退出。
+
+```js
+function sum(num1, num2){
+    return num1 + num2
+    console.log('ok')       // 不会执行
+}
+```
+
+如果没有指定return的变量，则函数默认返回undefind。
