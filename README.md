@@ -4,7 +4,7 @@ JS高程设计第四版的中文版总算是出了，第四版一共有28个章�
 
 如有错误的地方欢迎PR。
 
-### 目录(更新至第三章)
+### 目录(更新至第四章4.1)
 
 [第一章：什么是Javascript](https://github.com/attackonryan/Professional-JavaScript-for-Web-Developers-4th-Edition-reading-notes/blob/master/Chapter1.md)
 
@@ -12,7 +12,7 @@ JS高程设计第四版的中文版总算是出了，第四版一共有28个章�
 
 [第三章：语言基础](https://github.com/attackonryan/Professional-JavaScript-for-Web-Developers-4th-Edition-reading-notes/blob/master/Chapter3.md)
 
-[第四章：变量、作用域与内存](#)
+[第四章：变量、作用域与内存](https://github.com/attackonryan/Professional-JavaScript-for-Web-Developers-4th-Edition-reading-notes/blob/master/Chapter4.md)
 
 [第五章：基本引用类型](#)
 
