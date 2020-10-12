@@ -139,3 +139,34 @@ for-of循环会将空位当成存在的元素，只不过值为undefined。
 ES6之前的方法则会忽略这个空位，但具体的行为也会因方法而异。
 
 > **注意**：由于行为不一致和存在性能隐患，实践中要避免使用数组空位。如确实需要空位，则可以显示地用undefined代替
+
+
+
+### 6.2.3 数组索引
+
+要取得或设置数组的值，需要使用中括号并提供相应值的数字索引：
+
+```js
+let colors = ["red", "blue", "green"]
+colors[2] = "black"   // 修改第三项
+```
+
+如果把一个值设置给超过数组最大索引的索引，则数组长度会自动扩展到该索引值加1
+
+```js
+let colors = ["red", "blue", "green"]
+colors[5] = "black"   // 设置第6项为"black"
+console.log(colors.length)   // 6
+```
+
+通过修改length属性，可以截断或增长数组。增长数组后多出来的空位由undefined填充。
+
+```js
+let colors = ["red", "blue", "green"]
+colors.length = 1
+console.log(colors)   // ["red"]
+
+colors.length = 4
+console.log(colors[3]) // undefined 
+```
+
