@@ -144,6 +144,44 @@ console.log(s1.color)   // undefined
 
 
 
+## 5.4 单例内置对象
+
+ECMA-262对内置对象的定义是“任何由ECMAScript实现提供、与宿主环境无关，并在ECMAScript程序开始执行时就存在的对象”。这意味着开发者不用显式实例化内置对象，因为它们已经实例化好了。
+
+### 5.4.1 Global
+
+Global对象时ECMAScript中最特别的对象，因为代码不会显式访问它。ECMA-262规定Global对象为兜底对象，在全局作用域中定义的变量和函数都会变成Global对象的属性。
+
+#### window对象
+
+浏览器将window对象实现为Global对象的代理，因此所以全局作用域中声明的变量和函数都会变成window的属性。
+
+```js
+var color = "red"
+
+window.color = "red"
+```
+
+
+
+### 5.4.2 Math
+
+ECMAScript提供了Math对象作为保存数学公式、信息和计算的地方。
+
+常用属性和方法
+
+```js
+Math.E          // 自然对数的基数e的值
+Math.PI         // Π的值
+
+Math.min(2，5，1，10)      // 返回一组数值中的最小值
+Math.max(2，5，1，10)      // 返回一组数值中的最大值
+Math.ceil()               // 向上舍入为最接近的整数
+Math.floor()              // 向下舍入为最接近的整数
+Math.round()              // 四舍五入返回整数
+Math.random()             // 返回[0, 1)之间的随机数
+```
+
 
 
 
