@@ -46,3 +46,64 @@ now.getMonth()         // 9  (返回日期中的月，0表示一月，11表示�
 now.getHours()         // 9  (返回日期中的时(0~23))
 ```
 
+
+
+## 5.2 RegExp
+
+RegExp类型是ECMAScript支持正则表达式的接口，提供了大多数基础的和部分高级的正则表达式功能。
+
+正则表达式使用类似Perl的简洁语法来创建：
+
+```txt
+let expression = /pattern/flags
+```
+
+pattern（模式）可以是任何简单或复杂的正则表达式，包括字符类、限定符、分组、向前查找和反向引用。
+
+每个正则表达式可以带零个或多个flags（标记），用于控制正则表达式的行为：
+
+- g: 全局模式，表示查找字符串的全部内容，而不是找到第一个就结束。
+- i: 不区分大小写，表示在查找匹配时忽略pattern的字符串大小写。
+- m: 多行模式，表示查找到一行文本末尾时会继续查找。
+- y: 粘附模式，表示只查找从lastIndex开始及之后的字符串。
+
+使用不同模式和标记可以创建出各种表达式：
+
+```js
+// 匹配字符串中的所有"at"
+let pattern1 = /at/g
+
+// 匹配第一个"bat"或"cat"，忽略大小写
+let pattern2 = /[bc]at/i
+
+// 匹配所有以"at"结尾的三字符组合，忽略大小写
+let pattern3 = /.at/gi
+```
+
+如果要匹配元字符 （ [ { \ ^ $ | ] } ? * + . ，需要转义：
+
+```js
+// 匹配第一个"[bc]at",忽略大小写
+let pattern = /\[bc\at]/i
+
+// 匹配所有".at"，忽略大小写
+let pattern4 = /\.at/gi
+```
+
+RegExp实例的主要方法是exec()。主要用于配合捕获组的使用。这个方法只接收一个参数，即要应用模式的字符串。
+
+```js
+let text = "attack on ryan"
+let pattern = /at(t)ack/
+let matches = pattern.exec(text)     // ["attack", "t", index: 0, input: "attack on ryan", groups: undefined]
+```
+
+另一个常用方法是test()。接收一个字符串参数，如果能够匹配则返回true否则返回false。
+
+```js
+let text = "attack on ryan"
+let pattern = /attack/
+
+pattern.test(text)     // true
+```
+
