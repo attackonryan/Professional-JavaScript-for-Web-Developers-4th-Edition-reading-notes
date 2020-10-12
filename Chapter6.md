@@ -1,0 +1,128 @@
+# 第六章：集合引用类型
+
+## 6.1 Object
+
+Object是ECMAScript中最常用的类型之一。
+
+创建Object有两种方式，一种是使用new操作符和Object构造函数，另一种方式是使用**对象字面量**表示法（object literal）
+
+```js
+let person = new Object()
+person.name = 'Ryan'
+
+// 对象字面量表示
+let person2 = {
+    name: 'Titan'
+}         
+```
+
+字符串的属性名可以是字符串或数值，数值属性会自动转换为字符串
+
+```js
+let person = {
+    "name": "Ryan",
+    age: 20,
+    5: true
+}
+```
+
+使用中括号可以通过变量访问属性，或设置属性。
+
+```js
+let option = 'name'
+
+let person = {
+    [option]: 'Ryan'
+}
+
+person[option] = 'AttackonRyan'
+```
+
+通常，点语法是首选的属性存取方式，除非访问属性时必须使用变量。
+
+
+
+## 6.2 Array
+
+ECMAScript中的数组是一组有序的数据，且每个槽位可以存储任意类型的数据。
+
+ECMAScript中的数组也是动态大小的，会随着数据的添加而自动增长。
+
+### 6.2.1 创建数组
+
+有几种基本方式创建数组。一种是使用Array构造函数，给构造函数传入一个数值，然后length属性就会被自动创建并设置为这个值。
+
+```js
+let colors = new Array(20)    // 创建一个初始length为20的数组
+```
+
+也可以给Array构造函数传入要保存的元素。比如下面的代码会创建一个包含3个字符串值的数组。
+
+```js
+let colors = new Array("red", "blue", "green")
+```
+
+**有时候想创建一个只含一个数字的数组，直接使用Array构造函数是办不到的，因为他会创建一个长度为传入的数值的数组**。这时候可以使用Array.of()方法（ES6新增），这个方法用于将一组参数转换为数组实例。
+
+```js
+let colors = new Array(20)    // [empty × 20] 创建了一个初始length为20的数组
+let nums = Array.of(20)       // [20]
+```
+
+另一种创建数组的方式是使用**数组字面量**（array literal）表示法。
+
+```js
+let colors = ["red", "blue", "green"]
+```
+
+Array.from()也可以创建数组，用于将类数组结构转换为数组实例。
+
+Array.from()的第一个参数是一个类数组对象，即任何可迭代的结构，或者有一个length属性和可索引元素的结构。
+
+```js
+// 字符串会被拆分成单字符串数组
+console.log(Array.from("Ryan"))  // ["R", "y", "a", "n"]
+
+// Array.from()对现有数组执行浅复制
+const a1 = [1, 2, 3, 4]
+const a2 = Array.from(a1)
+
+console.log(a1)      // [1, 2, 3, 4]
+console.log(a1 === a2)  // false
+
+// arguments对象可以被轻松地转换为数组
+function getArgsArray(){
+    return Array.from(arguments)
+}
+console.log(getArgsArray(1, 2, 3))   // [1, 2, 3]
+
+// from()也能转换带有必要属性的自定义对象
+const arrayLikeObject = {
+    0: 1,
+    1: 2,
+    2: 3,
+    3: 4,
+    length: 4
+}
+console.log(Array.from(arrayLikeObject))   // [1, 2, 3, 4]
+```
+
+Array.from()还接收第二个可选的映射函数参数。这个函数可以改写新数组的值。还可以接收第三个可选参数，用于指定映射函数中this的值。
+
+```js
+const a1 = [1, 2, 3, 4]
+const a2 = Array.from(a1, x => x**2)
+const a3 = Array.from(a1, function(x){ 
+    return x **this.exponent
+}, {
+    exponent: 2
+})
+
+console.log(a2)   // [1, 4, 9, 16]
+console.log(a3)   // [1, 4, 9, 16]
+```
+
+
+
+
+
