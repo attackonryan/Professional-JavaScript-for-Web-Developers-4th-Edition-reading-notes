@@ -107,3 +107,44 @@ let pattern = /attack/
 pattern.test(text)     // true
 ```
 
+
+
+## 5.3 原始值包装类型
+
+为了方便操作原始值，ECMAScript提供了3中特殊的引用类型：Boolean、Number和 String。
+
+**每当用到某个原始值的方法或属性时，后台都会创建一个相应原始包装类型的对象，从而暴露出操作原始值的各种方法**。
+
+```js
+let s1 = "some text"
+let s2 = s1.substring(2)
+```
+
+s1为基本字符串类型，本不应该存在substring方法，但是后台会进行如下3个步骤：
+
+1. 创建一个String类型的实例
+2. 调用实例上的特定方法
+3. 销毁实例
+
+可以想象成如下代码
+
+```js
+let s1 = new String("some text")
+let s2 = s1.substring(2)
+s1 = null
+```
+
+因此给原始值添加属性或方法时无效的
+
+```js
+let s1 = "some text"
+s1.color = "cyan"       // （临时创建的实例会在语句结束后销毁）
+console.log(s1.color)   // undefined
+```
+
+
+
+
+
+
+
