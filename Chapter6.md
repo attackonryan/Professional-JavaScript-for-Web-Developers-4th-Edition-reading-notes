@@ -170,3 +170,25 @@ colors.length = 4
 console.log(colors[3]) // undefined 
 ```
 
+
+
+### 6.2.4 检测数组
+
+ instanceof 操作符可以检测一个对象是不是数组。
+
+```js
+if(value instanceof Array){
+   // 操作数组 
+}
+```
+
+但是如果网页里存在多个框架，可能会涉及两个不同的全局执行上下文，因此会有两个不同版本的Array构造函数，这个时候instanceof不一定返回正确的结果。
+
+为解决这个问题，ECMAScript提供了Array.isArray()方法。这个方法的目的是确定一个值是否为数组，而不用管它在哪个全局执行上下文中创建的。
+
+```js
+if(Array.isArray(value)){
+    // 操作数组
+}
+```
+
