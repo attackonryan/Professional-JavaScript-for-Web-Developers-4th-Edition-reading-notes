@@ -184,11 +184,32 @@ if(value instanceof Array){
 
 但是如果网页里存在多个框架，可能会涉及两个不同的全局执行上下文，因此会有两个不同版本的Array构造函数，这个时候instanceof不一定返回正确的结果。
 
-为解决这个问题，ECMAScript提供了Array.isArray()方法。这个方法的目的是确定一个值是否为数组，而不用管它在哪个全局执行上下文中创建的。
+为解决这个问题，ECMAScript提供了**Array.isArray()**方法。这个方法的目的是确定一个值是否为数组，而不用管它在哪个全局执行上下文中创建的。
 
 ```js
 if(Array.isArray(value)){
     // 操作数组
 }
+```
+
+
+
+### 6.2.5 迭代器方法
+
+ES6中，Array的原型上暴露了3个用于检索数组内容的方法：**keys**()、**values**()和**entries**()。
+
+keys()返回数组索引的迭代器，values()返回数组元素的迭代器、而entries()返回索引/值对的迭代器。
+
+```js
+const a = ["foo", "bar", "baz", "qux"]
+
+// 因为这些方法都返回迭代器，所以可以将它们的内容通过Array.from()直接转换为数组实例
+const aKeys = Array.from(a.keys())
+const aValues = Array.from(a.balues())
+const aEntries = Array.from(a.entries())
+
+console.log(aKeys)      // [0, 1, 2, 3]
+console.log(aValues)    // ["foo", "bar", "baz", "qux"]
+console.log(aEntries)   // [[0, "foo"], [1, "bar"], [2, "baz"], [3, "qux"]]
 ```
 
