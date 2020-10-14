@@ -21,13 +21,13 @@ now.getTime()          // 1602464952410(相当于Date.now())
 
 ### 5.1.1 继承的方法
 
-Date类型重写了toLocaleString()，toString()和valueOf()。
+Date类型重写了**toLocaleString()**，**toString()**和**valueOf()**。
 
-toLocaleString()方法返回与浏览器运行的本地环境一致的日期和时间。
+**toLocaleString()**方法返回与浏览器运行的本地环境一致的日期和时间。
 
-toString()方法通常返回带时区信息的日期和时间。
+**toString()**方法通常返回带时区信息的日期和时间。
 
-valueOf()返回日期的毫秒表示。
+**valueOf()**返回日期的毫秒表示。
 
 ```js
 let now = new Date()
@@ -120,7 +120,7 @@ let s1 = "some text"
 let s2 = s1.substring(2)
 ```
 
-s1为基本字符串类型，本不应该存在substring方法，但是后台会进行如下3个步骤：
+s1为基本字符串类型，本不应该存在**substring()**方法，但是后台会进行如下3个步骤：
 
 1. 创建一个String类型的实例
 2. 调用实例上的特定方法
