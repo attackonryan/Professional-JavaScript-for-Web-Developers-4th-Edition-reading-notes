@@ -198,7 +198,7 @@ if(Array.isArray(value)){
 
 ES6中，Array的原型上暴露了3个用于检索数组内容的方法：**keys**()、**values**()和**entries**()。
 
-keys()返回数组索引的迭代器，values()返回数组元素的迭代器、而entries()返回索引/值对的迭代器。
+**keys()**返回数组索引的迭代器，**values()**返回数组元素的迭代器、而**entries()**返回索引/值对的迭代器。
 
 ```js
 const a = ["foo", "bar", "baz", "qux"]
@@ -212,4 +212,267 @@ console.log(aKeys)      // [0, 1, 2, 3]
 console.log(aValues)    // ["foo", "bar", "baz", "qux"]
 console.log(aEntries)   // [[0, "foo"], [1, "bar"], [2, "baz"], [3, "qux"]]
 ```
+
+
+
+### 6.2.6 复制和填充方法
+
+ES6新增了两个方法：批量赋值方法**fill()**，以及填充数组方法**copyWithin()**。
+
+fill()的第一个参数是填充的值，第二个可选参数是索引的开始。第三个可选参数的索引的结束。
+
+```js
+const zeroes = [0, 0, 0, 0, 0]
+
+zeroes.fill(7, 1, 3) 
+
+console.log(zeroes)  // [0, 7, 7, 0, 0]
+```
+
+copyWithin()会按照指定范围浅复制数组中的部分内容，然后插入到指定索引开始位置。第一个参数是索引开始位置，第二，第三个参数是指定范围的开始索引和结束索引。
+
+```js
+const numbers = [1,2,3,4,5,6]
+
+numbers.copyWithin(2, 4, 6)
+
+console.log(numbers)  // [1, 2, 5, 6, 5, 6]
+```
+
+
+
+### 6.2.7 转换方法
+
+所有对象都有**toLocaleString()**、**toString()**和**valueOf()**方法。
+
+其中**valueOf()**返回的还是数组本身。
+
+**toString()**返回由数组中每个值调用**toString()**返回的字符串拼接而成的一个逗号分隔的字符串。
+
+**toLocaleString()**方法类似**toString()**，取数组每个元素值的时候会调用**toLocaleString()**方法，返回字符串拼接而成的一个逗号分隔的字符串。
+
+```js
+let colors = ["red", "blue", "green"]
+console.log(colors.toString())   // "red,blue,green"
+```
+
+调用数组上的join方法也可以获取字符串，不传参的情况下与toString()的返回值相同，如果传了参数，则分隔符变为参数。
+
+```js
+let colors = ["red", "blue", "green"]
+console.log(colors.join(","))  // "red,green,blue"
+console.log(colors.join("||")) // "red||green||blue"
+```
+
+
+
+### 6.2.8 栈方法
+
+ECMAScript数组提供了**push()**和**pop()**方法，以实现类似栈的行为。
+
+**push()**方法接收任意数量的参数，并将它们添加到数组末尾，返回数组的最新长度。
+
+**pop()**方法则用于删除数组的最后一项，同时减少数组的length值，返回被删除的项。
+
+
+
+### 6.2.9 队列方法
+
+使用**shift()**和**push()**方法，可以把数组当成队列来使用。
+
+**shift()**方法会删除数组的第一项并返回它。
+
+ECMAScript也提供了**unshift()**方法，这个方法执行**shift()**相反的操作：在数组开头添加任意多个值，然后返回新的数组长度。
+
+
+
+### 6.2.10 排序方法
+
+数组有两种方法可以用来对元素重新排序：**reverse()**和**sort()**。
+
+__reverse()__方法将数组元素反向 排列。
+
+```js
+let values = [1, 2, 3, 4, 5]
+values.reverse()
+console.log(values)  // [5, 4, 3, 2, 1]
+```
+
+__sort()__方法用于排序数组，默认情况下会按照升序排序，最小的值在前面，最大的值在后面。**为此sort()会在每一项上调用String()转型函数，然后来比较字符串决定顺序**。
+
+```js
+let values = [0, 1, 5, 10, 15]
+values.sort()
+console.log(values) // [0, 1, 10, 15 ,5]     // "5" > "15"
+```
+
+__sort()__方法接收一个__比较函数__，用于判断哪个值应该排在前面。
+
+比较函数接收两个参数，如果第一个参数应该排在第二个参数前面，则函数返回负值。如果第一个参数应该排在第二个参数后面，则返回正值。如果参数不用变化位置，则返回0。
+
+```js
+function compare(v1, v2){
+    if(v1 < v2){
+        return -1
+    }else if(v1 > v2){
+        return 1
+    }else{
+        return 0
+    }
+}
+/*
+	等价
+	function compare(v1, v2){
+		return v1 - v2
+	}
+*/
+
+let values = [0, 1, 15, 10, 5]
+values.sort(compare)
+console.log(values)  // [0, 1, 5, 10, 15]
+```
+
+
+
+### 6.2.11 操作方法
+
+对于数组中的元素，我们有很多操作方法。接下来讲三种方法：**concat()、slice()、splice()**
+
+__concat()__方法可以在现有数组全部元素基础上创建一个新的数组。它首先会创建一个当前数组的副本，然后再把它的参数添加到副本末尾，最后返回这个新构建的数组。**如果参数是一个或多个数组，concat()会把数组的每一项添加到结果数组**。
+
+```js
+let colors = ["red", "green", "blue"]
+let colors2 = colors.concat("yellow", ["black", "brown"])
+
+console.log(colors2)  // ["red", "green", "blue", "yellow", "black", "brown"]
+```
+
+__slice()__方法用于创建一个包含原始数组中一个或多个元素的新数组。slice()方法可以接收一个或两个参数：返回元素的开始索引和结束索引**(不包含)**，不过不提供第二个参数，则默认从开始索引取到末尾。
+
+```js
+let colors = ["red", "green", "blue"]
+let colors2 = colors.slice(1)
+let colors3 = colors.slice(1,2)
+console.log(colors2)   // ["green", "blue"]
+console.log(colors3)   // ["green"]
+```
+
+__splice()__方法可以改变数组本身。它接收三个参数，第一个参数指定删除元素的开始位置，第二个参数指定删除元素的数量，第三个以及之后的参数指定在开始位置处要插入的元素。
+
+```js
+let colors = ["red", "green", "blue"]
+let removed = colors.splice(0, 1)    // 在位置0处删除1个元素
+console.log(removed)    // "red"
+console.log(colors)     // ["green", "blue"]
+
+colors.splice(1, 0 ,"a", "b")    // 在位置1处删除0个元素，并插入两个元素
+console.log(colors)    // ["green", "a", "b", "blue"]
+```
+
+
+
+### 6.2.12 搜索和位置方法
+
+ECMAScript提供两类搜索数组的方法：按严格相等搜索和按断言函数搜索。
+
+#### 1. 严格相等
+
+ECMAScript提供了3个严格相等的搜索方法：**indexOf()**、**lastIndexOf()**和**includes()**（ES7）。
+
+这三个方法都接收两个参数：要查找的元素和一个可选的起始搜索位置。 
+
+__indexOf()__和__includes()__方法从数组前头开始向后搜索，而__lastIndexOf()__方法相反。
+
+__indexOf()__和__lastIndexOf()__返回查找的元素在数组中的位置，如果没找到则返回-1.
+
+**includes()**返回布尔值，表示是否找到一个指定元素匹配的项。
+
+**三个方法在比较时会使用全等（===）比较**。
+
+```js
+let numbers = [1, 2, 3, 4, 5, 4, 3, 2, 1]
+
+console.log(numbers.indexOf(4))     // 3
+console.log(numbers.lastIndexOf(4)) // 5
+console.log(numbers.includes(4))    // true
+
+console.log(numbers.indexOf(4, 4))     // 5
+console.log(numbers.lastIndexOf(4, 4)) // 3
+console.log(numbers.includes(4, 7))    // false
+```
+
+#### 2. 断言函数
+
+ECMAScript也允许按照定义的断言函数搜索数组，每个索引都会调用这个函数。
+
+断言函数接收3个参数：元素、索引和数组本身。元素指的是数组中当前搜索的元素。
+
+__find()__和__findIndex()__方法使用了断言函数。__find()__返回第一个匹配的元素，__findIndex()__返回第一个匹配元素的索引。
+
+```js
+let nums = [5, 4, 2, 10]
+let tenIndex = nums.findIndex(function(v, i, arr){
+  return v === 10  
+})
+
+console.log(tenIndex)    // 3
+```
+
+
+
+### 6.2.13 迭代方法
+
+ECMAScript为数组定义了5个迭代方法。每个方法接收两个参数：以每一项为参数运行的函数、以及可选的作为函数运行上下文的作用域对象（影响函数中this的值）。传给每个方法的函数接收3个参数：数组元素、元素索引和数组本身。这5个迭代方法如下：
+
+- __every()__：对数组每一项都运行传入的函数，如果对每一项都返回true，则这个方法返回true。
+- __filter()__：对数组每一项都运行传入的函数，函数返回true的项会组成数组之后返回。
+- __forEach()__：对数组每一项都运行传入的函数，无返回值。
+- __map()__：对数组每一项都运行传入的函数，返回由每次函数调用的结果构成的数组。
+- __some()__：对数组每一项都运行传入的函数，如果有一项函数返回true，则这个方法返回true，否则返回false
+
+```js
+let numbers = [1, 2, 3, 4]
+let newNums = numbers.map(function(v, i, arr){
+    return v ** 2
+})
+console.log(newNums)    // [2, 4, 6, 8]
+```
+
+
+
+### 6.2.14 归并方法
+
+ECMAScript为数组提供了两个归并方法：__reduce()__和__reduceRight()__。
+
+这两个方法接收两个参数：第一个参数为初始值，第二个为当前值。每轮循环的返回值都会作为下轮循环的初始值，最后一轮循环的返回值即最终的返回值。
+
+```js
+let values = [1, 2, 3, 4]
+let sum = values.reduce(function(pre, cur){
+    // 第一次循环，pre为1，cur为2
+    return pre + cur
+})
+console.log(sum)   // 10
+```
+
+如果不提供第二个参数，则默认第一次初始值为第一个元素，当前值则为第二个元素。
+
+如果提供第二个参数，则默认第一次循环的初始值为第二个参数，当前值为第一个元素。
+
+```js
+let values = [1, 2, 3, 4]
+let sum = values.reduce(function(pre, cur){
+    // 第一次循环，pre为0，cur为1
+    return pre + cur
+}, 0)
+console.log(sum)   // 10
+```
+
+__reduceRight()__和__reduce()__方法的差别只是方向相反一下。
+
+
+
+### 6.3 定型数组（typed array）
+
+偏底层，暂时跳过。
 
