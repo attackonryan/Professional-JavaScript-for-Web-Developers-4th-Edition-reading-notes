@@ -527,7 +527,7 @@ console.log(m.size)          // 0
 
 ### 6.4.2 顺序与迭代
 
-Map的默认迭代器返回**entries()**方法取得的值，也就是以插入顺序生成[key, value]形式的数组。
+Map的**默认迭代器**返回**entries()**（或者Symbol.iterator属性，它引用entries()）方法取得的值，也就是以插入顺序生成[key, value]形式的数组。
 
 ```js
 const m1 = new Map([
@@ -617,3 +617,118 @@ m.delete(obj)
 
 因为WeakMap中的键/值对任何时候都可能被销毁，**所以没必要提供迭代其键/值对的能力**。所以WeakMap不提供__clear()__这样一次性销毁所有键/值的方法。
 
+
+
+## 6.6 Set
+
+ECMAScript6新增的Set是一种新集合类型。Set在很多方面都像是加强的Map，这是因为它们的大多数API和行为都是共有的。
+
+### 6.6.1 基本API
+
+使用new关键字和Set构造函数创建一个空集合：
+
+```js
+const m = new Set()
+```
+
+可以给构造函数传入一个可迭代对象来初始化实例：
+
+```js
+const s1 = new Set(["val1", "val2", "val3"])
+console.log(s1.size)   // 3
+```
+
+初始化之后，可以使用__add()__增加值，使用__has()__查询，通过**size**取得元素数量，以及使用__delete()__和__clear()__删除元素。
+
+```js
+const s1 = new Set(["val1", "val2", "val3"])
+console.log(s1.size)   // 3
+s1.add("val4")
+s1.delete("val1")
+
+console.log(s1)    // ["val2", "val3", "val4"]
+```
+
+Set可以包含任何值，但不允许出现重复的值，集合与Map类似，使用__SameValueZero__操作（NaN与NaN认为是同一个值，-0 与 +0也认为是一个值）。
+
+```js
+const s1 = new Set(["val1", "val2", "val3"])
+s1.add("val3")
+
+console.log(s1)    // ["val1", "val2", "val3"]
+```
+
+
+
+### 6.6.2 顺序与迭代
+
+集合实例可以通过__values()__方法及其别名方法__keys()__（或者Symbol.iterator属性，它引用values()）取得**迭代器**（Iterator）：
+
+```js
+const s1 = new Set(["val1", "val2", "val3"])
+
+console.log(s.values === s[Symbol.iterator])   // true
+console.log(s.keys === s[Symbol.iterator])   // true
+
+for(let value of s.values()){
+    console.log(value)
+}
+// "val1"
+// "val2"
+// "val3"
+
+for(let value of s[Symbol.iterator]()){
+    console.log(value)
+}
+// "val1"
+// "val2"
+// "val3"
+```
+
+集合的__entries()__方法返回一个迭代器，可以按照插入顺序产生包含两个元素的数组，这两个元素是集合中每个值的重复出现：
+
+```js
+for(let pair of s.entries()){
+    console.log(pair)
+}
+// ["val1", "val1"]
+// ["val2", "val2"]
+// ["val3", "val3"]
+```
+
+
+
+## 6.7 WeakSet
+
+WeakSet是Set的“兄弟”类型，其API也是Set的子集。
+
+### 6.7.1 基本API
+
+可以使用new关键字实例化一个空的WeakSet：
+
+```js
+const ws = new WeakSet()
+```
+
+**弱集合中的值只能是Object或者继承自Object的类型，尝试使用非对象设置值会抛出TypeError**。
+
+```js
+const val1 = {id:1}
+const val2 = {id:2}
+
+const ws = new WeakSet([val1])
+
+ws.has(val2)    // false
+ws.add(val2)
+ws.has(val2)    // true
+```
+
+### 6.7.2 弱值
+
+**WeakSet中的值不属于正式的引用，不会阻止垃圾回收。**
+
+
+
+### 6.7.3 不可迭代值
+
+因为WeakSet中的值任何时候都可能被销毁，所以没必要提供迭代其值的能力，因此同样用不着像__clear()__这样一次性销毁所有值的方法。
