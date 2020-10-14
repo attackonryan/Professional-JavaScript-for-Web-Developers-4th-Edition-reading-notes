@@ -4,7 +4,7 @@ JS高程设计第四版的中文版总算是出了，第四版一共有28个章�
 
 如有错误的地方欢迎PR。
 
-### 目录(更新至第六章 6.2 Array)
+### 目录(更新至第六章 6.4 Map)
 
 [第一章：什么是Javascript](https://github.com/attackonryan/Professional-JavaScript-for-Web-Developers-4th-Edition-reading-notes/blob/master/Chapter1.md)
 

@@ -474,5 +474,108 @@ __reduceRight()__和__reduce()__方法的差别只是方向相反一下。
 
 ### 6.3 定型数组（typed array）
 
-偏底层，暂时跳过。
+暂时跳过。
+
+
+
+### 6.4 Map
+
+作为ECMAScript的新增特性，Map()是一种行的集合类型，为这门语言带来了真正的键/值存储机制。Map的大多数特性都可以通过Object类型实现，但二者之间还是存在一些细微的差别。
+
+### 6.4.1 基本API
+
+使用new关键字和Map构造函数可以创建一个空映射：
+
+```js
+const m = new Map()
+```
+
+如果想在创建的同时初始化实例，可以给Map构造函数传入一个可迭代对象，需要包含键/值对数组。
+
+```js
+const m1 = new Map([
+    ["key1", "val1"],
+    ["key2", "val2"],
+    ["key3", "val3"]
+])
+
+console.log(m1.size)  // 3
+```
+
+可以使用__set()__方法添加键/值对。可以使用__get()__和__has()__进行查询，可以通过**size**属性获取映射中的键/值对的数量。使用__delete()__和__clear()__删除值。
+
+```js
+const m = new Map()
+
+console.log(m.has("name"))   // false
+console.log(m,size)          // 0
+
+m.set("name", "Ryan")
+
+console.log(m.has("name"))   // true
+console.log(m.get("name"))   // "Ryan"
+
+m.delete("name")
+console.log(m.size)          // 0 
+```
+
+
+
+> Map内部使用**SameValueZero**比较操作，NaN与NaN认为是同一个值，-0 与 +0也认为是一个值。
+
+
+
+### 6.4.2 顺序与迭代
+
+Map的默认迭代器返回**entries()**方法取得的值，也就是以插入顺序生成[key, value]形式的数组。
+
+```js
+const m1 = new Map([
+    ["key1", "val1"],
+    ["key2", "val2"],
+    ["key3", "val3"]
+])
+
+for(let pair of m1){
+    console.log(pair)
+}
+
+// ["key1", "val1"]
+// ["key2", "val2"]
+// ["key3", "val3"]
+```
+
+__keys()__和__values()__分别返回以插入顺序生成键和值的迭代器。
+
+```js
+const m1 = new Map([
+    ["key1", "val1"],
+    ["key2", "val2"],
+    ["key3", "val3"]
+])
+
+for(let key of m1.keys()){
+    console.log(key)
+}
+
+// "key1"
+// "key2"
+// "key3"
+
+for(let value of m1.values()){
+    console.log(value)
+}
+
+// "val1"
+// "val2"
+// "val3"
+```
+
+
+
+### 6.4.3 选择object还是Map
+
+如果代码涉及大量删除操作，选择Map，其它情况，Map与object差距不大，一般来说Map内存占用更少。
+
+
 
