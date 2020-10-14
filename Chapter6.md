@@ -579,3 +579,41 @@ for(let value of m1.values()){
 
 
 
+### 6.5 WeakMap
+
+ECMAScript6新增的“弱映射”（WeakMap）是一种新的集合类型，为这门语言带来了增强的键/值对存储机制。WeakMap是Map的“兄弟”类型，其API也是Map的子集。WeakMap中的“weak”（弱），描述的是JavaScript垃圾回收程序对待“弱映射”中键的方式。
+
+### 6.5.1 基本API
+
+使用new关键字实例化一个空的WeakMap:
+
+```js
+const wm = new WeakMap()
+```
+
+**弱映射中的键只能是Object或者继承自Object的类型，尝试使用非对象设置键会抛出TypeError**。值的类型没有限制。
+
+```js
+const wm = new WeakMap()
+
+let obj = {}
+console.log(wm.has(obj))   // false
+
+wm.set(obj, "Ryan")
+
+console.log(wm.has(obj))   // true
+console.log(wm.get(obj))   // "Ryan"
+
+m.delete(obj)
+```
+
+### 6.5.2 弱键
+
+**WeakMap中的键不属于正式的引用，不会阻止垃圾回收。**
+
+
+
+### 6.5.3 不可迭代键
+
+因为WeakMap中的键/值对任何时候都可能被销毁，**所以没必要提供迭代其键/值对的能力**。所以WeakMap不提供__clear()__这样一次性销毁所有键/值的方法。
+
