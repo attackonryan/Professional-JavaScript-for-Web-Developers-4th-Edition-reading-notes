@@ -80,17 +80,17 @@ console.log(person.name)    // "ryan"
 
 ### 4.1.4 确定类型
 
-typeof无法区分null或对象。typeof虽然对原始值很有用，但它对引用值的作用不大。
+**typeof**无法区分null或对象。**typeof**虽然对原始值很有用，但它对引用值的作用不大。
 
-为解决这个问题，ECMAScript提供了instanceof操作符，语法如下：
+为解决这个问题，ECMAScript提供了**instanceof**操作符，语法如下：
 
 ```js
 result = variable instanceof constructor
 ```
 
-如果变量时给定构造函数的实例，则instanceof操作符返回true。
+如果变量时给定构造函数的实例，则**instanceof**操作符返回true。
 
-> 所有引用值都是Object的实例，所以通过instanceof操作符检测任何引用值和Object构造函数都会返回true
+> 所有引用值都是Object的实例，所以通过**instanceof**操作符检测任何引用值和Object构造函数都会返回true
 
 
 
