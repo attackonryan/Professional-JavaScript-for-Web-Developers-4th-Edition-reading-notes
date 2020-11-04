@@ -152,3 +152,220 @@ console.log(arr)   // [1, 2, 3, 4, 5]
 ```
 
 **按照我自己的理解做一个总结：迭代器模式，就是可以让本不具备迭代能力的对象，具备可迭代的能力。最直观的体现就是能在for-of循环中直接遍历对象。**
+
+
+
+## 7.3 生成器
+
+生成器是ECMAScript6新增的一个极为灵活的结构，拥有一个函数块内暂停和恢复代码执行的能力。可以用作自定义迭代器。
+
+### 7.3.1 生成器基础
+
+生成器是一个函数，在函数名前面加一个星号（*）表示它是一个生成器：
+
+```js
+function * generator(){
+    
+}
+```
+
+> 箭头函数不能用来定义生成器
+
+调用生成器函数会产生一个**生成器对象**，这个对象也实现了Iterator接口。
+
+生成器对象一开始处于**暂停执行**（suspended）的状态，调用**next**()方法，调用这个方法会让生成器开始或恢复执行。
+
+next()方法的返回值类似于迭代器，有一个done属性和一个value属性。函数体为空的生成器函数中间不会停留，调用一次**next**()就会到达**done: true**状态。
+
+```js
+function * generator(){
+    
+}
+
+let generatorObj = generator()
+
+console.log(generatorObj)           // generator {<suspended>}
+console.log(generatorObj.next())    // {value: undefined, done: true}
+```
+
+value属性是生成器的返回值，默认为undefined，可以通过生成器函数的返回值指定：
+
+```js
+function * generator(){
+    return 'foo'
+}
+
+let generatorObj = generator()
+
+console.log(generatorObj)           // generator {<suspended>}
+console.log(generatorObj.next())    // {value: 'foo', done: true}
+```
+
+生成器只会在初次调用next()方法后开始执行：
+
+```js
+function * generator(){
+    console.log(1)
+}
+
+let generatorObj = generator()
+
+console.log(generatorObj)           // generator {<suspended>}
+console.log(generatorObj.next())    // 1
+```
+
+生成器对象实现了Iterable接口，它们默认的迭代器是自引用的：
+
+```js
+function * generator(){
+    console.log(1)
+}
+
+let generatorObj = generator()
+
+console.log(generatorObj === generatorObj[Symbol.iterator]())   // true
+```
+
+
+
+### 7.3.2 通过yield中断执行
+
+生成器函数在遇到yield关键字之前 会正常执行，但遇到这个关键字后，执行会停止，函数作用域的状态会被保留。必须使用**next**()方法恢复执行。
+
+yield后跟的值会出现在**next**()方法返回的对象里（value属性）。
+
+通过yield关键字暂停的生成器函数会处在**done: false**状态。
+
+```js
+function * generator(){
+    yield 1
+    yield 2
+    yield 3
+}
+
+let generatorObj = generator()
+
+console.log(generatorObj.next())    // {value: 1, done: false}
+console.log(generatorObj.next())    // {value: 2, done: false}
+console.log(generatorObj.next())    // {value: 3, done: false}
+console.log(generatorObj.next())    // {value: undefined, done: true}
+```
+
+生成器函数生成的生成器对象不会干扰其他的生成器对象：
+
+```js
+function * generator(){
+    yield 1
+    yield 2
+    yield 3
+}
+
+let generatorObj1 = generator()
+let generatorObj2 = generator()
+
+console.log(generatorObj1.next())    // {value: 1, done: false}
+console.log(generatorObj2.next())    // {value: 1, done: false}
+```
+
+yield只能在生成器函数内使用，在其他地方会抛出错误。
+
+
+
+#### 1. 生成器对象作为可迭代对象
+
+可以将生成器对象作为可迭代对象使用（因为它实现了iterable接口）：
+
+```js
+function * generator(){
+    yield 1
+    yield 2
+    yield 3
+}
+
+for(let num of generator()){
+    console.log(num)
+}
+// 1
+// 2
+// 3
+```
+
+
+
+#### 2. 使用yield实现输入和输出
+
+yield 关键字还可以作为函数的中间参数使用。并且在next()函数中传递的参数会成为yield的返回值。
+
+第一次调用next()传入的值不会被使用，因为这次调用是为了开始执行生成器函数：
+
+```js
+function * generator(){
+    console.log('start')
+    let a = yield 1
+    console.log(a)
+    let b = yield 2
+    console.log(b)
+}
+
+let generatorObj = generator()
+
+console.log(generatorObj.next().value)  // 'start'
+console.log(generatorObj.next('a').value)  // 'a'
+console.log(generatorObj.next('b').value)  // 'b'
+```
+
+
+
+#### 3. 产生可迭代对象
+
+可以使用星号增强yield的行为，让它能够迭代一个可迭代对象。
+
+```js
+function * generator(){
+    yield* [1, 2, 3]
+}
+
+for(let num of generator()){
+    console.log(num)
+}
+
+// 1
+// 2
+// 3
+```
+
+
+
+### 7.3.3 生成器作为默认迭代器
+
+生成器很适合用作实现对象的iterable接口。
+
+改写我们先前的例子：
+
+```js
+// 实现了Iterable接口的对象，并且这个接口返回一个迭代器
+let iterable = {
+    // 修改为生成器函数
+    *[Symbol.iterator](){			
+        let count = 0
+        // 循环，并且使用yield输出值。
+        while(count ++ < 5){
+            yield count
+        }
+    }
+}
+
+for(let num of iterable){
+    console.log(num)
+}
+// 1
+// 2
+// 3
+// 4
+// 5
+
+let arr = [...iterable]
+console.log(arr)   // [1, 2, 3, 4, 5]
+```
+
+代码变得简洁许多。
