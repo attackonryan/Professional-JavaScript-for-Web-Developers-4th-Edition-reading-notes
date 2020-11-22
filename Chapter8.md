@@ -100,3 +100,52 @@ console.log(person.name)  // "ryan"
 
 **注意：每个属性只能定义一种属性类型（数据属性 or 访问器属性）**
 
+
+
+### 8.1.2 定义多个属性
+
+使用**Object.defineProperties**()方法可以通过多个描述符一次性定义多个属性。它接收两个参数：要为之添加或修改属性的对象和另一个描述符对象，属性与要修改的属性一一对应。
+
+```js
+let person = {}
+Object.defineProperties(person, {
+    name: {
+        writable: true,
+        value: "attackonryan"
+    },
+    age: {
+        get(){
+            return 20
+        }
+    }
+})
+```
+
+
+
+### 8.1.3 读取属性的特性
+
+使用**Object.getOwnPropertyDescriptor**()方法可以取得指定属性的属性描述符。方法接收两个参数：属性所在对象与属性名。
+
+使用**Object.getOwnPropertyDescriptors**()方法可以取得指定对象的所有属性描述符。
+
+
+
+### 8.1.4 合并对象
+
+**Object.assign**()方法接收一个目标对象和一个或多个源对象作为函数，将每个源对象中可枚举（Object.propertyIsEnumerable()返回true）且自有（Object.hasOwnProperty()返回true）属性复制到目标对象。 以字符串和符号为键的属性会被复制。
+
+```js
+let dest = {}
+let src = {id: "src"}
+
+let result = Object.assign(dest, src)
+
+console.log(dest === result)   // true
+console.log(dest !== src)      // true
+console.log(result)            // {id: "src"}
+console.log(dest)			   // {id: "src"}
+```
+
+**Object.assign**()执行的是**浅复制**，如果多个源对象有相同属性，则使用最后一个复制的值。
+
