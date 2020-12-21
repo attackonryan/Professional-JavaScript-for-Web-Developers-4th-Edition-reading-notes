@@ -4,6 +4,8 @@ JS高程设计第四版的中文版总算是出了，第四版一共有28个章�
 
 如有错误的地方欢迎PR。
 
+更新：线上阅读地址(http://attackonryan.gitee.io/javascript-reading-notes)
+
 ### 目录(更新至第八章 8.1.4)
 
 [第一章：什么是Javascript](https://github.com/attackonryan/Professional-JavaScript-for-Web-Developers-4th-Edition-reading-notes/blob/master/Chapter1.md)
